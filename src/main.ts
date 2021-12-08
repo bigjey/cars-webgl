@@ -165,7 +165,7 @@ function addDecorations(scene: Scene): void {
     const x = (Math.random() - 0.5) * 1500;
     const z = (Math.random() - 0.5) * 1500;
     const r = Math.random() * Math.PI * 2;
-    const size = 3 + Math.random() * 10;
+    const size = 5 + Math.random() * 20;
     const cube = createBox(x, z, size);
 
     cube.rotation.y = r;
@@ -200,7 +200,7 @@ function createBox(x: number, z: number, size: number): Object3D {
 }
 
 function createCollectible(x: number, z: number): Object3D {
-  const geometry = new SphereBufferGeometry(2);
+  const geometry = new BoxBufferGeometry(4, 4, 4);
   const material = new MeshLambertMaterial({
     color: 0x00aa00,
   });

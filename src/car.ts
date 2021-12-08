@@ -7,7 +7,7 @@ import {
 } from "three";
 import { keys } from "./keyboard";
 
-const MAX_VELOCITY = 4;
+const MAX_VELOCITY = 3;
 const MAX_TURN_ANGLE = Math.PI / 4;
 
 export class Car {
@@ -22,10 +22,15 @@ export class Car {
   }
 
   update(dt: number) {
-    if (keys["KeyA"]) {
+    const left = keys["KeyA"] || keys["left"] || keys["ArrowLeft"];
+    const right = keys["KeyD"] || keys["right"] || keys["ArrowRight"];
+    const up = keys["KeyW"] || keys["accellerate"] || keys["ArrowUp"];
+    const down = keys["KeyS"] || keys["break"] || keys["ArrowDown"];
+
+    if (left) {
       this.turn = Math.min(MAX_TURN_ANGLE, this.turn + 0.1);
       this.turn = Math.max(-MAX_TURN_ANGLE, this.turn);
-    } else if (keys["KeyD"]) {
+    } else if (right) {
       this.turn = Math.min(MAX_TURN_ANGLE, this.turn - 0.1);
       this.turn = Math.max(-MAX_TURN_ANGLE, this.turn);
     } else {
@@ -35,9 +40,9 @@ export class Car {
       }
     }
 
-    if (keys["KeyW"]) {
+    if (up) {
       this.accelleration = 0.1;
-    } else if (keys["KeyS"]) {
+    } else if (down) {
       this.accelleration = -0.1;
     } else {
       this.accelleration = 0;

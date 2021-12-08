@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cars WebGL</title>
     <link rel="stylesheet" href="/src/style.css" />
@@ -10,6 +10,17 @@
   <body>
     <canvas></canvas>
     <div id="debug"></div>
+    <div id="score">0</div>
+    <div id="controls">
+      <div id="left">&larr;</div>
+      <div id="right">&rarr;</div>
+      <div id="break">&darr;</div>
+      <div id="accellerate">&uarr;</div>
+    </div>
+    <script>
+      document.documentElement.className +=
+        "ontouchstart" in document.documentElement ? " touch" : " no-touch";
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

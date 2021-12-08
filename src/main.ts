@@ -10,6 +10,7 @@ import {
   OrthographicCamera,
   PlaneBufferGeometry,
   Scene,
+  SphereBufferGeometry,
   Vector3,
   WebGLRenderer,
 } from "three";
@@ -17,6 +18,8 @@ import gsap from "gsap";
 
 // import "./gyroscope";
 import { Car } from "./car";
+
+const scoreEl = document.getElementById("score") as HTMLDivElement;
 
 const CAMERA_OFFSET = new Vector3(-100, 200, 200);
 
@@ -42,7 +45,11 @@ scene.add(car.object);
 
 addDecorations(scene);
 
+const collectibles = addCollectibles(scene);
+
 const clock = new Clock();
+
+let score = 0;
 
 window.requestAnimationFrame(function frame() {
   window.requestAnimationFrame(frame);
@@ -50,6 +57,26 @@ window.requestAnimationFrame(function frame() {
   const dt = clock.getDelta();
 
   car.update(dt);
+
+  const deleted = [];
+  for (const c of collectibles) {
+    if (!c.visible) {
+      continue;
+    }
+
+    const d =
+      Math.pow(c.position.x - car.object.position.x, 2) +
+      Math.pow(c.position.y - car.object.position.y, 2) +
+      Math.pow(c.position.z - car.object.position.z, 2);
+
+    if (d < 10 * 10) {
+      scene.remove(c);
+      score++;
+      c.visible = false;
+
+      scoreEl.innerText = score.toString();
+    }
+  }
 
   camera.position.set(
     car.object.position.x + CAMERA_OFFSET.x,
@@ -69,7 +96,7 @@ window.requestAnimationFrame(function frame() {
   renderer.render(scene, camera);
 });
 
-let cameraHeight = 120;
+let cameraHeight = 150;
 
 function updateCamera() {
   const aspect = window.innerWidth / window.innerHeight;
@@ -136,7 +163,7 @@ function createLights(scene: Scene): void {
 }
 
 function addDecorations(scene: Scene): void {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 200; i++) {
     const x = (Math.random() - 0.5) * 1500;
     const z = (Math.random() - 0.5) * 1500;
     const r = Math.random() * Math.PI * 2;
@@ -149,6 +176,20 @@ function addDecorations(scene: Scene): void {
   }
 }
 
+function addCollectibles(scene: Scene): Object3D[] {
+  const list: Object3D[] = new Array(200);
+  for (let i = 0; i < list.length; i++) {
+    const x = (Math.random() - 0.5) * 1500;
+    const z = (Math.random() - 0.5) * 1500;
+    const c = createCollectible(x, z);
+
+    scene.add(c);
+
+    list[i] = c;
+  }
+  return list;
+}
+
 function createBox(x: number, z: number, size: number): Object3D {
   const geometry = new BoxBufferGeometry(size, size, size);
   const material = new MeshLambertMaterial({
@@ -158,4 +199,15 @@ function createBox(x: number, z: number, size: number): Object3D {
   cube.castShadow = true;
   cube.position.set(x, size / 2, z);
   return cube;
+}
+
+function createCollectible(x: number, z: number): Object3D {
+  const geometry = new SphereBufferGeometry(2);
+  const material = new MeshLambertMaterial({
+    color: 0x00aa00,
+  });
+  const sphere = new Mesh(geometry, material);
+  sphere.castShadow = true;
+  sphere.position.set(x, 3, z);
+  return sphere;
 }

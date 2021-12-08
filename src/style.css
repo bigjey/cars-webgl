@@ -4,11 +4,18 @@
   outline: none;
 }
 
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
 html,
 body {
-  display: flex;
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  font-family: "Courier New", Courier, monospace;
+  color: #fff;
 }
 
 canvas {
@@ -22,8 +29,63 @@ canvas {
   top: 0;
   left: 0;
   z-index: 2;
-  color: #fff;
   padding: 10px;
   font-size: 40px;
-  font-family: "Courier New", Courier, monospace;
+}
+
+#controls {
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  font-size: 100px;
+  font-weight: 900;
+  width: 100%;
+  display: none;
+  user-select: none;
+}
+
+#controls div {
+  flex: 0 0 25%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 100px;
+  line-height: 1;
+  padding: 20px 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+#controls div:active {
+  background: #ffffff11;
+}
+
+.touch #controls {
+  display: flex;
+}
+
+#score {
+  pointer-events: none;
+  font-size: 200px;
+  font-weight: 400;
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  color: #ffffff10;
 }

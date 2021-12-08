@@ -47,6 +47,7 @@ export class Car {
       }
     }
     this.velocity = Math.min(MAX_VELOCITY, this.velocity + this.accelleration);
+    this.velocity = Math.max(-MAX_VELOCITY, this.velocity);
 
     if (this.velocity != 0) {
       if (this.turn != 0) {
@@ -76,7 +77,7 @@ export class Car {
 
     const bodyGeometry = new BoxBufferGeometry(10, 5, 20);
     const bodyMaterial = new MeshPhongMaterial({
-      color: 0x22aa44,
+      color: 0x119eae,
     });
     const body = new Mesh(bodyGeometry, bodyMaterial);
     body.position.y = 2;

@@ -51,25 +51,34 @@ window.requestAnimationFrame(function frame() {
 
   car.update(dt);
 
-  gsap.to(camera.position, {
-    x: car.object.position.x + CAMERA_OFFSET.x,
-    y: car.object.position.y + CAMERA_OFFSET.y,
-    z: car.object.position.z + CAMERA_OFFSET.z,
-    duration: 1,
-  });
+  camera.position.set(
+    car.object.position.x + CAMERA_OFFSET.x,
+    car.object.position.y + CAMERA_OFFSET.y,
+    car.object.position.z + CAMERA_OFFSET.z
+  );
+
+  // gsap.to(camera.position, {
+  //   x: car.object.position.x + CAMERA_OFFSET.x,
+  //   y: car.object.position.y + CAMERA_OFFSET.y,
+  //   z: car.object.position.z + CAMERA_OFFSET.z,
+  //   duration: 1,
+  // });
+
+  plane.position.set(car.object.position.x, 0, car.object.position.z);
 
   renderer.render(scene, camera);
 });
 
+let cameraHeight = 120;
+
 function updateCamera() {
   const aspect = window.innerWidth / window.innerHeight;
-  const height = 150;
-  const width = height * aspect;
+  const width = cameraHeight * aspect;
 
   camera.left = width / -2;
   camera.right = width / 2;
-  camera.top = height / 2;
-  camera.bottom = height / -2;
+  camera.top = cameraHeight / 2;
+  camera.bottom = cameraHeight / -2;
 
   camera.updateProjectionMatrix();
 }
@@ -83,6 +92,12 @@ camera.lookAt(0, 0, 0);
 window.addEventListener("resize", function () {
   updateCamera();
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+window.addEventListener("mousewheel", function (e) {
+  cameraHeight = Math.max(50, cameraHeight + Math.sign(e.deltaY) * 50);
+  cameraHeight = Math.min(500, cameraHeight);
+  updateCamera();
 });
 
 function createPlane(): Mesh<PlaneBufferGeometry, MeshLambertMaterial> {

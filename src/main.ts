@@ -10,7 +10,6 @@ import {
   OrthographicCamera,
   PlaneBufferGeometry,
   Scene,
-  SphereBufferGeometry,
   Vector3,
   WebGLRenderer,
 } from "three";

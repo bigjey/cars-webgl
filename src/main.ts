@@ -15,6 +15,7 @@ import {
 } from "three";
 import gsap from "gsap";
 
+import "./gyroscope";
 import { Car } from "./car";
 
 const CAMERA_OFFSET = new Vector3(-100, 200, 200);

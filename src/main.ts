@@ -15,7 +15,7 @@ import {
 } from "three";
 import gsap from "gsap";
 
-import "./gyroscope";
+// import "./gyroscope";
 import { Car } from "./car";
 
 const CAMERA_OFFSET = new Vector3(-100, 200, 200);
@@ -30,7 +30,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = BasicShadowMap;
 
 const scene = new Scene();
-const camera = createCamera();
+const camera = new OrthographicCamera();
 
 createLights(scene);
 
@@ -61,10 +61,10 @@ window.requestAnimationFrame(function frame() {
   renderer.render(scene, camera);
 });
 
-window.addEventListener("resize", function () {
+function updateCamera() {
   const aspect = window.innerWidth / window.innerHeight;
-  const width = 200;
-  const height = width / aspect;
+  const height = 150;
+  const width = height * aspect;
 
   camera.left = width / -2;
   camera.right = width / 2;
@@ -72,28 +72,18 @@ window.addEventListener("resize", function () {
   camera.bottom = height / -2;
 
   camera.updateProjectionMatrix();
+}
 
+updateCamera();
+
+camera.position.set(-100, 200, 200);
+
+camera.lookAt(0, 0, 0);
+
+window.addEventListener("resize", function () {
+  updateCamera();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-function createCamera(): OrthographicCamera {
-  const aspect = window.innerWidth / window.innerHeight;
-  const width = 200;
-  const height = width / aspect;
-
-  const camera = new OrthographicCamera(
-    width / -2,
-    width / 2,
-    height / 2,
-    height / -2
-  );
-
-  camera.position.set(-100, 200, 200);
-
-  camera.lookAt(0, 0, 0);
-
-  return camera;
-}
 
 function createPlane(): Mesh<PlaneBufferGeometry, MeshLambertMaterial> {
   const geometry = new PlaneBufferGeometry(1000, 1000);
@@ -115,14 +105,14 @@ function createLights(scene: Scene): void {
   const directionalLight = new DirectionalLight(0xffffff, 0.7);
   directionalLight.position.set(100, 300, 50);
   directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.width = 4096; // default
-  directionalLight.shadow.mapSize.height = 4096; // default
+  directionalLight.shadow.mapSize.width = 4096;
+  directionalLight.shadow.mapSize.height = 4096;
   directionalLight.shadow.camera.left = -1000;
   directionalLight.shadow.camera.right = 1000;
   directionalLight.shadow.camera.top = 1000;
   directionalLight.shadow.camera.bottom = -1000;
-  directionalLight.shadow.camera.near = 0.5; // default
-  directionalLight.shadow.camera.far = 500; // default
+  directionalLight.shadow.camera.near = 0.5;
+  directionalLight.shadow.camera.far = 500;
 
   // const helper = new CameraHelper(directionalLight.shadow.camera);
   // scene.add(helper);

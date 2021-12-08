@@ -63,9 +63,9 @@ window.requestAnimationFrame(function frame() {
 
   if (move != 0) {
     if (turn != 0) {
-      car.rotateY(turn * 0.05);
+      car.rotateY(turn * 0.08);
     }
-    car.translateZ(move * 1);
+    car.translateZ(move * 3);
   }
 
   renderer.render(scene, camera);
@@ -73,7 +73,7 @@ window.requestAnimationFrame(function frame() {
 
 function createCamera(): OrthographicCamera {
   const aspect = window.innerWidth / window.innerHeight;
-  const width = 100;
+  const width = 200;
   const height = width / aspect;
 
   const camera = new OrthographicCamera(
@@ -155,10 +155,10 @@ function createLights(scene: Scene): void {
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.width = 1024; // default
   directionalLight.shadow.mapSize.height = 1024; // default
-  directionalLight.shadow.camera.left = -100;
-  directionalLight.shadow.camera.right = 100;
-  directionalLight.shadow.camera.top = 100;
-  directionalLight.shadow.camera.bottom = -100;
+  directionalLight.shadow.camera.left = -300;
+  directionalLight.shadow.camera.right = 300;
+  directionalLight.shadow.camera.top = 300;
+  directionalLight.shadow.camera.bottom = -300;
   directionalLight.shadow.camera.near = 0.5; // default
   directionalLight.shadow.camera.far = 500; // default
 

@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+html,
+body {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+canvas {
+  display: block;
+}

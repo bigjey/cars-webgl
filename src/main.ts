@@ -1,5 +1,8 @@
 import {
+  Audio,
+  AudioListener,
   AmbientLight,
+  AudioLoader,
   BasicShadowMap,
   BoxBufferGeometry,
   Clock,
@@ -18,6 +21,7 @@ import {
 import { Car } from "./car";
 
 const scoreEl = document.getElementById("score") as HTMLDivElement;
+const startEl = document.getElementById("start") as HTMLDivElement;
 
 const CAMERA_OFFSET = new Vector3(-100, 200, 200);
 
@@ -32,6 +36,49 @@ renderer.shadowMap.type = BasicShadowMap;
 
 const scene = new Scene();
 const camera = new OrthographicCamera();
+
+const listener = new AudioListener();
+camera.add(listener);
+
+// create a global audio source
+
+// load a sound and set it as the Audio object's buffer
+const audioLoader = new AudioLoader();
+const files = ["Fluffing-a-Duck.mp3", "pickupCoin.wav"];
+const sounds = await Promise.all<Audio>(
+  files.map(
+    (file) =>
+      new Promise((resolve, reject) => {
+        audioLoader.load(
+          file,
+          function (buffer) {
+            const sound = new Audio(listener);
+            sound.setBuffer(buffer);
+            sound.setVolume(0.1);
+            resolve(sound);
+          },
+          function () {},
+          function (err) {
+            reject(err);
+          }
+        );
+      })
+  )
+)
+  .then((sounds) => {
+    startEl.innerText = "Start";
+
+    startEl.addEventListener("click", function () {
+      this.remove();
+      frame();
+      sounds[0].play();
+    });
+
+    return sounds;
+  })
+  .catch((e) => {
+    startEl.innerText = e.toString();
+  });
 
 createLights(scene);
 
@@ -49,7 +96,7 @@ const clock = new Clock();
 
 let score = 0;
 
-window.requestAnimationFrame(function frame() {
+function frame() {
   window.requestAnimationFrame(frame);
 
   const dt = clock.getDelta();
@@ -70,8 +117,11 @@ window.requestAnimationFrame(function frame() {
       scene.remove(c);
       score++;
       c.visible = false;
-
       scoreEl.innerText = score.toString();
+      if (sounds[1].isPlaying) {
+        sounds[1].stop();
+      }
+      sounds[1].play(0);
     }
   }
 
@@ -91,7 +141,7 @@ window.requestAnimationFrame(function frame() {
   plane.position.set(car.object.position.x, 0, car.object.position.z);
 
   renderer.render(scene, camera);
-});
+}
 
 let cameraHeight = 150;
 

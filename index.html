@@ -2,17 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./assets/favicon.17e50649.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cars WebGL</title>
     
-    <script type="module" crossorigin src="./assets/index.463bb20c.js"></script>
-    <link rel="modulepreload" href="./assets/vendor.be1624a7.js">
-    <link rel="stylesheet" href="./assets/index.b4a3aa3d.css">
+    <script type="module" crossorigin src="./assets/index.34bd077a.js"></script>
+    <link rel="modulepreload" href="./assets/vendor.5247cfff.js">
+    <link rel="stylesheet" href="./assets/index.e5ebe001.css">
   </head>
   <body>
     <canvas></canvas>
     <div id="debug"></div>
+    <div id="score">0</div>
+    <div id="controls">
+      <div id="left">&larr;</div>
+      <div id="right">&rarr;</div>
+      <div id="break">&darr;</div>
+      <div id="accellerate">&uarr;</div>
+    </div>
+    <script>
+      document.documentElement.className +=
+        "ontouchstart" in document.documentElement ? " touch" : " no-touch";
+    </script>
     
   </body>
 </html>

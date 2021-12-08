@@ -14,7 +14,6 @@ import {
   Vector3,
   WebGLRenderer,
 } from "three";
-import gsap from "gsap";
 
 // import "./gyroscope";
 import { Car } from "./car";
@@ -58,7 +57,6 @@ window.requestAnimationFrame(function frame() {
 
   car.update(dt);
 
-  const deleted = [];
   for (const c of collectibles) {
     if (!c.visible) {
       continue;
@@ -121,7 +119,7 @@ window.addEventListener("resize", function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-window.addEventListener("mousewheel", function (e) {
+window.addEventListener("wheel", function (e: WheelEvent) {
   cameraHeight = Math.max(50, cameraHeight + Math.sign(e.deltaY) * 50);
   cameraHeight = Math.min(500, cameraHeight);
   updateCamera();

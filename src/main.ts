@@ -45,7 +45,7 @@ camera.add(listener);
 // load a sound and set it as the Audio object's buffer
 const audioLoader = new AudioLoader();
 const files = ["Fluffing-a-Duck.mp3", "pickupCoin.wav"];
-const sounds = await Promise.all<Audio>(
+const sounds = (await Promise.all<Audio>(
   files.map(
     (file) =>
       new Promise((resolve, reject) => {
@@ -74,11 +74,11 @@ const sounds = await Promise.all<Audio>(
       sounds[0].play();
     });
 
-    return sounds;
+    return Promise.resolve(sounds);
   })
   .catch((e) => {
     startEl.innerText = e.toString();
-  });
+  })) as Audio[];
 
 createLights(scene);
 

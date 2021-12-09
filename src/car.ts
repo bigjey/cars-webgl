@@ -8,12 +8,12 @@ import {
 import { keys } from "./keyboard";
 
 const MAX_VELOCITY = 4;
-const VELOCITY_ACCELLERATION = 5;
-const VELOCITY_ACCELLERATION_DAMPING = 0.95;
+const VELOCITY_ACCELLERATION = 7;
+const VELOCITY_ACCELLERATION_DAMPING = 0.75;
 
-const MAX_TURN_ANGLE = 60 * (Math.PI / 180); // 60 deg
-const TURN_ACCELLERATION = 10;
-const TURN_ACCELLERATION_DAMPING = 0.8;
+const MAX_TURN_ANGLE = 85 * (Math.PI / 180); // 60 deg
+const TURN_ACCELLERATION = 15;
+const TURN_ACCELLERATION_DAMPING = 0.3
 
 export class Car {
   object: Object3D;

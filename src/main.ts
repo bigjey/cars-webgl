@@ -145,7 +145,7 @@ function frame() {
   renderer.render(scene, camera);
 }
 
-let cameraHeight = 150;
+let cameraHeight = 250;
 
 function updateCamera() {
   const aspect = window.innerWidth / window.innerHeight;

@@ -7,8 +7,13 @@ import {
 } from "three";
 import { keys } from "./keyboard";
 
-const MAX_VELOCITY = 3;
-const MAX_TURN_ANGLE = Math.PI / 4;
+const MAX_VELOCITY = 4;
+const VELOCITY_ACCELLERATION = 5;
+const VELOCITY_ACCELLERATION_DAMPING = 0.95;
+
+const MAX_TURN_ANGLE = 60 * (Math.PI / 180); // 60 deg
+const TURN_ACCELLERATION = 10;
+const TURN_ACCELLERATION_DAMPING = 0.8;
 
 export class Car {
   object: Object3D;
@@ -28,39 +33,45 @@ export class Car {
     const down = keys["KeyS"] || keys["break"] || keys["ArrowDown"];
 
     if (left) {
-      this.turn = Math.min(MAX_TURN_ANGLE, this.turn + 0.1);
+      this.turn = Math.min(MAX_TURN_ANGLE, this.turn + TURN_ACCELLERATION * dt);
       this.turn = Math.max(-MAX_TURN_ANGLE, this.turn);
     } else if (right) {
-      this.turn = Math.min(MAX_TURN_ANGLE, this.turn - 0.1);
+      this.turn = Math.min(MAX_TURN_ANGLE, this.turn - TURN_ACCELLERATION * dt);
       this.turn = Math.max(-MAX_TURN_ANGLE, this.turn);
     } else {
-      this.turn *= 0.8;
+      this.turn *= TURN_ACCELLERATION_DAMPING;
       if (Math.abs(this.turn) < 0.01) {
         this.turn = 0;
       }
     }
 
     if (up) {
-      this.accelleration = 0.1;
+      this.accelleration = VELOCITY_ACCELLERATION;
     } else if (down) {
-      this.accelleration = -0.1;
+      this.accelleration = -VELOCITY_ACCELLERATION;
     } else {
       this.accelleration = 0;
-      this.velocity *= 0.95;
+      this.velocity *= VELOCITY_ACCELLERATION_DAMPING;
       if (Math.abs(this.velocity) < 0.01) {
         this.velocity = 0;
       }
     }
-    this.velocity = Math.min(MAX_VELOCITY, this.velocity + this.accelleration);
+    this.velocity = Math.min(
+      MAX_VELOCITY,
+      this.velocity + this.accelleration * dt
+    );
     this.velocity = Math.max(-MAX_VELOCITY, this.velocity);
 
     if (this.velocity != 0) {
       if (this.turn != 0) {
         this.object.rotateY(this.turn * this.velocity * dt);
       }
+      this.object.translateZ(this.velocity);
     }
+  }
 
-    this.object.translateZ(this.velocity);
+  get speedIndex() {
+    return this.velocity / MAX_VELOCITY;
   }
 
   createObject() {
